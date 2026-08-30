@@ -31,3 +31,7 @@ data_logger_warnings.txt
 # External dependencies must be installed, never committed
 site-packages/
 **/site-packages/
+
+docs/build/
+__pycache__/
+*.pyc
