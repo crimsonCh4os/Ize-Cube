@@ -42,7 +42,7 @@ Incluye, entre otras funciones:
 - Comparación entre sesiones, grupos y modelos.
 - Interfaz en inglés y español.
 
-Versión actual de los paquetes de referencia: **1.2.0**.
+Versión actual de los paquetes de referencia: **1.3.0**.
 
 También existe una variante específica para **Python 3.13**:
 
@@ -147,10 +147,6 @@ Entre los datos registrados se encuentran, según el contexto:
 El logger está diseñado para seguir recogiendo información en **Edit Mode** sin recorrer de forma agresiva el BMesh vivo durante ráfagas de actualización.
 
 Las operaciones que modifican gran cantidad de geometría —por ejemplo, aplicar transformaciones aleatorias sobre todos los vértices de una Suzanne— deben considerarse pruebas de estrés relevantes. El logger debe priorizar la estabilidad de Blender y limitar el coste del muestreo durante estas ráfagas.
-
-### Smooth by Angle
-
-El efecto/modificador **Smooth by Angle** se excluye del conteo de modificadores de Ize Logger para evitar falsos positivos, ya que se considera un efecto de shading más que un modificador de modelado convencional para los objetivos del análisis.
 
 ---
 
