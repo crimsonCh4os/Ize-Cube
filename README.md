@@ -128,10 +128,6 @@ El logger está diseñado para seguir recogiendo información en **Edit Mode** s
 
 Las operaciones que modifican gran cantidad de geometría —por ejemplo, aplicar transformaciones aleatorias sobre todos los vértices de una Suzanne— deben considerarse pruebas de estrés relevantes. El logger debe priorizar la estabilidad de Blender y limitar el coste del muestreo durante estas ráfagas.
 
-### Smooth by Angle
-
-El efecto/modificador **Smooth by Angle** se excluye del conteo de modificadores de Ize Logger para evitar falsos positivos, ya que se considera un efecto de shading más que un modificador de modelado convencional para los objetivos del análisis.
-
 ---
 
 ## Consentimiento y privacidad
@@ -228,12 +224,6 @@ Recomendaciones de uso:
 
 - seleccionar al menos tres métricas para que la forma del radar sea interpretable;
 - interpretar cada eje según la descripción incluida junto al gráfico;
-- en **Modo de trabajo**, la escala debe leerse como:
-  - `0 = Otro`
-  - `1 = Objeto`
-  - `2 = Edición`
-  - un valor mayor indica mayor predominio de Edit Mode;
-- velocidad, distancia y picos utilizan las unidades locales descritas anteriormente.
 
 ---
 
