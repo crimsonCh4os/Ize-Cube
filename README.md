@@ -1,243 +1,160 @@
-# Herramientas para la monitorización y análisis de procesos de modelado 3D en Blender
+# Ize — Herramientas para monitorización y análisis de procesos de modelado 3D en Blender
 
-Suite de *add-ons* para Blender orientada al registro, análisis y visualización de procesos de modelado 3D.
+Suite de add-ons para Blender orientada al **registro, análisis y visualización de procesos de modelado 3D**.
 
 El proyecto se divide en dos componentes principales:
 
-1. **Data Logger 3D**: *add-on* encargado de registrar eventos técnicos de una sesión de modelado 3D en Blender.
-2. **Analysis 3D**: *add-on* encargado de procesar los archivos CSV generados, calcular métricas y visualizar los resultados de la sesión registrada.
+- **Ize Logger**: registra actividad y métricas de una sesión de modelado en Blender y genera datos estructurados en CSV.
+- **Ize Insights**: carga los CSV generados por Ize Logger, calcula métricas, permite comparar sesiones o grupos y genera tablas y visualizaciones 3D dentro de Blender.
 
-## Estructura del repositorio
+Repositorio: https://github.com/crimsonCh4os/Add_On_Blender_2026
 
-```text
-GitHub/
-├── Analysis_3D/                  # Código fuente y archivos del add-on Analysis 3D
-├── Data_Loggers/                 # Versiones normal y Debug de Data Logger 3D
-│   ├── Data_Logger_3D.py
-│   └── Data_Logger_3D_Debug.py
-├── core/                         # Lógica desacoplada y agnóstica a Blender
-├── datos_analisis/               # Archivos y datos utilizados para los análisis
-├── docs/                         # Memoria, manuales y documentación técnica
-├── scripts/                      # Scripts e instaladores para el entorno de Blender
-├── tests/                        # Pruebas automatizadas desarrolladas con pytest
-├── .gitignore                    # Archivos y carpetas excluidos del repositorio
-├── Analysis_3D.zip               # ZIP instalable del add-on Analysis 3D
-├── CONTRIBUTING.md               # Normas y recomendaciones para colaborar
-├── LICENSE                       # Licencia del proyecto
-├── README.md                     # Descripción e instrucciones generales
-├── pytest.ini                    # Configuración de pytest
-├── requirements-test.txt         # Dependencias necesarias para ejecutar los tests
-├── requirements.txt              # Dependencias generales de Analysis 3D
-└── run_tests_windows.bat         # Ejecución automática de los tests en Windows
-```
+---
 
-## Licencia
+## Componentes
 
-Este software se distribuye bajo la licencia **GNU General Public License v3.0 or later** (`GPL-3.0-or-later`).
+### Ize Logger
 
-Consulta el archivo [`LICENSE`](LICENSE) incluido en el repositorio.
+Actualmente se distribuyen dos variantes:
+
+- `Ize_Logger_Manual.zip`: el registro se controla manualmente desde la interfaz.
+- `Ize_Logger_Consent.zip`: incorpora el flujo de consentimiento antes de registrar datos.
+
+Ambas variantes comparten la misma base de código y el mismo formato CSV. **No deben instalarse simultáneamente**, ya que ambas utilizan el mismo paquete interno `Ize_Logger`.
+
+Versión actual de los paquetes de referencia: **1.3.0**.
+
+### Ize Insights
+
+`Ize_Insights.zip` proporciona las herramientas de análisis, comparación y visualización de los datos registrados.
+
+Incluye, entre otras funciones:
+
+- Carga de CSV individuales.
+- Creación de grupos a partir de múltiples sesiones.
+- Compatibilidad con CSV actuales y formatos heredados reconocibles por su estructura.
+- Cálculo de métricas de interacción y de modelado.
+- Cálculo de métricas geométricas del modelo.
+- Tablas paginadas y comparativas.
+- Gráficos de interacción / timeline.
+- Forest plot comparativo.
+- Radar comparativo.
+- Comparación entre sesiones, grupos y modelos.
+- Interfaz en inglés y español.
+
+Versión actual de los paquetes de referencia: **1.2.0**.
+
+---
 
 ## Compatibilidad
 
-- **Blender**: 4.0 o superior.
-- **Python de Blender**: versión incluida con Blender 4.x.
-- **Sistemas operativos**: Windows, Linux y macOS.
-- **Analysis 3D**: versión actual 1.0.5.
+- **Blender:** 4.0 o superior.
+- **Python:** versión incluida con Blender 4.x.
+- **Sistemas operativos:** Windows, Linux y macOS, sujeto a la disponibilidad de wheels compatibles para las dependencias de Ize Insights.
 
-La compatibilidad completa debe comprobarse en la versión concreta de Blender utilizada, especialmente después de actualizar Blender, NumPy o Matplotlib.
+La validación final debe realizarse siempre en la versión concreta de Blender utilizada, especialmente después de actualizar Blender o sus dependencias de Python.
+
+---
 
 ## Instalación
 
-### Ejecución automática de scripts
-
-Para que **Data Logger 3D** pueda reanudar automáticamente el registro al abrir un archivo `.blend` previamente guardado, debe estar activada la ejecución automática de scripts de Python:
+### Ize Logger
 
 1. Abre Blender.
-2. Ve a `Edit > Preferences > File Paths`.
-3. Activa `Auto Run Python Scripts`.
-4. Guarda las preferencias si Blender lo solicita.
+2. Ve a **Edit > Preferences > Add-ons** o **Get Extensions**, según la versión de Blender.
+3. Selecciona **Install from Disk**.
+4. Instala **una sola** de estas variantes:
+   - `Ize_Logger_Manual.zip`
+   - `Ize_Logger_Consent.zip`
+5. Activa el complemento.
+6. Abre la barra lateral de la Vista 3D con `N`.
+7. Accede a la pestaña **Ize Logger**.
 
-Esta opción no es necesaria para instalar el *add-on*, pero sí para permitir su ejecución automática al abrir archivos `.blend`.
+Si cambias de variante Manual a Consent, o viceversa, es recomendable desactivar/eliminar primero la variante anterior y reiniciar Blender antes de instalar la nueva.
 
-### Data Logger 3D
-
-1. Abre Blender.
-2. Ve a `Edit > Preferences > Add-ons`.
-3. Pulsa `Install...`.
-   - En algunas versiones de Blender, esta opción aparece dentro del menú situado en la esquina superior derecha del panel.
-4. Selecciona uno de los siguientes archivos:
-   - `Data_Loggers/Data_Logger_3D.py` para uso normal.
-   - `Data_Loggers/Data_Logger_3D_Debug.py` para diagnóstico.
-5. Activa el *add-on* **Data Logger 3D**.
-6. En la Vista 3D, pulsa `N` para abrir la barra lateral.
-7. Accede a la pestaña **Data Logger**.
-
-No deben activarse simultáneamente las versiones normal y Debug, ya que ambas registran clases y operadores con identificadores compartidos.
-
-### Analysis 3D
+### Ize Insights
 
 1. Abre Blender.
-2. Ve a `Edit > Preferences`.
-3. Abre la sección `Add-ons` o `Get Extensions`, según la versión de Blender.
-4. Selecciona `Install...` o `Install from Disk`.
-5. Elige el archivo `Analysis_3D.zip`.
-6. Activa el *add-on* **Analysis 3D**.
+2. Ve a **Edit > Preferences > Add-ons** o **Get Extensions**.
+3. Selecciona **Install from Disk**.
+4. Instala `Ize_Insights.zip`.
+5. Activa **Ize Insights**.
+6. La primera vez que se instala esa copia del complemento, abre el panel de Ize Insights y pulsa **Instalar dependencias**.
+7. Espera a que finalice la instalación de dependencias.
+8. Reinicia Blender.
+9. Vuelve a activar Ize Insights si fuese necesario.
 
-Debe seleccionarse directamente el ZIP instalable del *add-on*. No debe seleccionarse:
+### Dependencias de Ize Insights
 
-- La carpeta `Analysis_3D/`.
-- Un ZIP general que contenga otros archivos ZIP.
-- Una carpeta de entrega completa.
+Ize Insights utiliza principalmente:
 
-El paquete instalable de Analysis 3D 1.0.5 debe contener `blender_manifest.toml` en la raíz del ZIP. Si Blender muestra el error `Missing manifest`, se ha seleccionado un paquete incorrecto o el manifiesto no está situado en la raíz.
+- NumPy
+- Matplotlib
+- Pillow
+- y sus dependencias asociadas
 
-## Dependencias de Analysis 3D
+El ZIP distribuye los archivos `.whl` necesarios dentro de `Ize_Insights/wheels/`.
 
-Las librerías externas no se incluyen dentro del *add-on* ni se versionan en el repositorio.
+Las librerías **no se distribuyen preextraídas** dentro de `site-packages`. Al pulsar **Instalar dependencias**, los wheels se instalan para esa instalación concreta del complemento.
 
-Analysis 3D necesita:
+No se recomienda copiar manualmente carpetas `site-packages`, `.pyd`, `.dll` u otros binarios entre instalaciones de Blender.
 
-- NumPy.
-- Matplotlib.
+---
 
-Estas dependencias deben instalarse utilizando el Python interno de Blender.
+## Uso básico de Ize Logger
 
-### Instalación desde los scripts del repositorio
+Ize Logger registra información de la sesión mientras el usuario trabaja en Blender.
 
-Desde la raíz del proyecto:
+Según la variante instalada, el registro puede iniciarse manualmente o estar condicionado al consentimiento del usuario.
 
-#### Windows
+Entre los datos registrados se encuentran, según el contexto:
 
-```powershell
-.\scripts\install_environment.bat "C:\Ruta\A\blender.exe"
-```
+- tiempo de sesión;
+- modo de trabajo;
+- actividad de navegación;
+- distancia y velocidad de vista;
+- picos de movimiento;
+- uso de Object Mode y Edit Mode;
+- actividad sobre geometría;
+- cambios de modificadores;
+- información de topología;
+- estados de visualización y oclusión;
+- operaciones UV;
+- métricas necesarias para el análisis posterior en Ize Insights.
 
-#### Linux o macOS
+### Edit Mode y estabilidad
 
-```bash
-./scripts/install_environment.sh /ruta/al/ejecutable/blender
-```
+El logger está diseñado para seguir recogiendo información en **Edit Mode** sin recorrer de forma agresiva el BMesh vivo durante ráfagas de actualización.
 
-El instalador:
+Las operaciones que modifican gran cantidad de geometría —por ejemplo, aplicar transformaciones aleatorias sobre todos los vértices de una Suzanne— deben considerarse pruebas de estrés relevantes. El logger debe priorizar la estabilidad de Blender y limitar el coste del muestreo durante estas ráfagas.
 
-- Utiliza `requirements.txt`.
-- Ejecuta `pip` con el Python interno de Blender.
-- Instala las dependencias necesarias.
-- Verifica que Blender puede importar NumPy y Matplotlib.
+### Smooth by Angle
 
-Después de la instalación, reinicia Blender.
+El efecto/modificador **Smooth by Angle** se excluye del conteo de modificadores de Ize Logger para evitar falsos positivos, ya que se considera un efecto de shading más que un modificador de modelado convencional para los objetivos del análisis.
 
-No debe copiarse manualmente una carpeta `site-packages` dentro de `Analysis_3D`, ya que puede aumentar innecesariamente el tamaño del repositorio y provocar incompatibilidades con la versión de Python incluida en Blender.
+---
 
-Para más información, consulta:
+## Consentimiento y privacidad
 
-- [`docs/DEVELOPER_GUIDE.md`](docs/DEVELOPER_GUIDE.md)
-- [`CONTRIBUTING.md`](CONTRIBUTING.md)
+La variante **Ize Logger Consent** incorpora un flujo explícito de consentimiento antes del registro.
 
-## Uso básico
+El proyecto está diseñado para trabajar con identificadores seudónimos y evitar incluir información personal innecesaria en los CSV.
 
-### Data Logger 3D
+Antes de distribuir datos de ejemplo o datos de participantes, comprueba que no contienen:
 
-Desde el panel **Data Logger** se puede:
+- nombres personales;
+- rutas locales;
+- nombres de usuario del sistema;
+- identificadores personales innecesarios;
+- cualquier información que permita relacionar una sesión con una persona concreta sin una justificación explícita.
 
-- Iniciar o detener el registro de la sesión.
-- Exportar el registro completo a CSV.
-- Exportar una copia anónima sin `UserID`.
-- Regenerar el identificador seudónimo del usuario.
-- Borrar el consentimiento almacenado.
-- Eliminar los datos incrustados en el archivo `.blend`.
-
-El *add-on* guarda los datos dentro del propio archivo `.blend` mediante bloques de texto internos. Por tanto, el registro puede conservarse aunque no se exporte inmediatamente a un archivo CSV externo.
-
-El inicio de la captura requiere consentimiento. Cuando se abre un archivo `.blend` guardado, el *add-on* comprueba el estado del consentimiento antes de iniciar automáticamente el registro.
-
-### Indicador de grabación
-
-Mientras Data Logger 3D está registrando una sesión, Blender muestra un indicador `REC` en la barra superior.
-
-Este indicador permite comprobar visualmente si el registro está activo.
-
-### Extracción manual del CSV incrustado
-
-Los datos pueden recuperarse manualmente desde Blender:
-
-1. Abre el archivo `.blend` que contiene la sesión.
-2. Cambia un área de Blender al `Text Editor`.
-3. Busca el bloque `data_log_internal.csv`.
-4. Ábrelo.
-5. Selecciona `Text > Save As...`.
-6. Guarda el contenido como archivo `.csv`.
-
-También puede aparecer el bloque:
-
-```text
-data_logger_warnings.txt
-```
-
-Este bloque contiene advertencias recuperables generadas durante la captura.
-
-Otros bloques internos utilizados son:
-
-```text
-data_logger_user_id
-consent_flag
-```
-
-### Analysis 3D
-
-1. Abre el panel de **Analysis 3D**.
-2. Selecciona un archivo CSV generado por Data Logger 3D.
-3. Carga el archivo.
-4. Ejecuta el cálculo de métricas.
-5. Revisa las tablas y los resultados.
-6. Genera las visualizaciones disponibles.
-
-Analysis 3D admite archivos CSV de los esquemas v1 y v2.
-
-## Funcionalidades principales de Analysis 3D
-
-Analysis 3D incluye, entre otras, las siguientes funciones:
-
-- Lectura y normalización de registros CSV.
-- Compatibilidad con los esquemas CSV v1 y v2.
-- Cálculo de métricas temporales y de velocidad.
-- Cálculo de métricas asociadas a estrategias de modelado.
-- Visualización independiente de los gráficos G1, G2 y G3.
-- Normalización mediante puntuaciones Z en el gráfico G2.
-- Ajuste de márgenes y presentación del gráfico G3.
-- Comparación de geometrías mediante una estructura Octree.
-- Cálculo y análisis de normales invertidas.
-- Filtrado y tratamiento de valores no válidos o extremos.
-- Visualización de resultados en tablas y ventanas independientes.
-
-## Variante Debug de Data Logger 3D
-
-`Data_Loggers/Data_Logger_3D_Debug.py` incluye herramientas adicionales de diagnóstico, como:
-
-- Último operador detectado.
-- Motivo del último registro.
-- Estado del seguimiento UV.
-- Advertencias recuperables.
-- Información sobre eventos y cambios detectados.
-- Consulta del bloque `data_logger_warnings.txt`.
-
-Esta variante está destinada a pruebas y diagnóstico. Para uso normal debe instalarse `Data_Logger_3D.py`.
+---
 
 ## Formato CSV
 
-El proyecto soporta dos esquemas.
+Ize Logger genera CSV estructurados para su posterior análisis en Ize Insights.
 
-### Esquema v1
-
-Formato heredado que utiliza la columna:
-
-```text
-USER_ID
-```
-
-### Esquema v2
-
-Formato actual que incorpora:
+Los esquemas actuales pueden incluir campos de control como:
 
 ```text
 SchemaVersion
@@ -246,219 +163,181 @@ SessionID
 UserID
 ```
 
-Analysis 3D normaliza automáticamente los archivos v1 antes de realizar los cálculos.
+Ize Insights también mantiene compatibilidad con CSV heredados cuando su estructura permite reconocerlos correctamente, incluso si no incluyen todos los campos modernos de identificación.
 
-Las especificaciones completas se encuentran en:
+La especificación detallada se encuentra en:
 
-[`docs/CSV_SCHEMA.md`](docs/CSV_SCHEMA.md)
+- `docs/CSV_SCHEMA.md`
 
-## Datos CSV de ejemplo
+---
 
-El repositorio incluye CSV de ejemplo anonimizados para comprobar el funcionamiento de las herramientas sin utilizar datos identificables de participantes.
+## Uso básico de Ize Insights
 
-Estos archivos deben revisarse para evitar la inclusión de:
+1. Abre la pestaña **Ize Insights** en la barra lateral de la Vista 3D.
+2. Selecciona el tipo de datos que quieres analizar.
+3. Añade uno o varios CSV.
+4. Opcionalmente, crea grupos para comparar varias sesiones como una unidad de análisis.
+5. Ejecuta **Calculate Data / Calcular datos** para obtener métricas de sesión.
+6. Para análisis geométrico, selecciona los modelos necesarios y ejecuta **Calculate model metrics / Calcular métricas del modelo**.
+7. Consulta las tablas o genera los gráficos disponibles.
 
-- Nombres propios.
-- Rutas locales.
-- Identificadores personales.
-- Nombres de usuario del sistema.
-- Información que permita relacionar una sesión con una persona concreta.
+### Agregación de grupos
 
-## Privacidad
+Un grupo representa una colección de sesiones, no una sesión gigante concatenada.
 
-Data Logger 3D utiliza un `UserID` seudónimo generado mediante UUID.
+Por tanto, las métricas de grupo se agregan de acuerdo con su significado. Por ejemplo:
 
-El sistema no está diseñado para registrar nombres personales ni rutas locales como parte del esquema CSV.
+- la duración se calcula como **media de la duración de las sesiones**;
+- las medias por sesión deben dar el mismo peso a cada CSV;
+- los conteos comparativos se expresan como medias por sesión cuando corresponde;
+- máximos y mínimos conservan su significado cuando representan extremos reales.
 
-El proyecto proporciona herramientas para:
+---
 
-- Regenerar el identificador.
-- Borrar el consentimiento.
-- Eliminar los datos incrustados.
-- Exportar una copia anónima sin `UserID`.
+## Métricas de vista y unidades locales
 
-El consentimiento se almacena dentro del archivo `.blend`. Los datos de una escena no se eliminan automáticamente al desinstalar el *add-on*.
+Para facilitar la comparación entre usuarios y escenas de diferente escala, los **gráficos** normalizan únicamente estas métricas de vista respecto al tamaño local calculado para la escena:
 
-## Pruebas automatizadas
+- **Velocidad de navegación** → tamaño local/min.
+- **Distancia al objetivo** → múltiplos del tamaño local.
+- **Picos de movimiento** → calculados a partir de la velocidad ya normalizada.
 
-El proyecto utiliza `pytest` para validar:
+Esta normalización se aplica en el contexto gráfico para estas tres métricas. No implica convertir de forma general todas las métricas físicas almacenadas en los datos o mostradas en tablas.
 
-- La lógica desacoplada de `core/`.
-- La detección de operadores.
-- El esquema CSV.
-- La migración de CSV v1 a v2.
-- La privacidad y gestión de identificadores.
-- La escritura y deduplicación de registros.
-- Las métricas de Analysis 3D.
-- Parte de la lógica geométrica fuera de Blender.
+---
 
-### Instalación de dependencias de prueba
+## Visualizaciones de Ize Insights
 
-Desde la raíz del repositorio:
+### Interaction / Timeline
 
-```bash
-python -m pip install -r requirements-test.txt
-```
+Permite observar la evolución temporal de las métricas seleccionadas y comparar varias sesiones.
 
-### Ejecución
+Cuando se representan varias fuentes, las leyendas deben identificar las series por el **nombre real del CSV o del grupo**, evitando etiquetas genéricas como `Observation 1`, `Observation 2`, etc.
 
-#### Cualquier sistema
+### Forest plot
 
-```bash
-python -m pytest -v
-```
+Permite comparar métricas normalizadas entre sesiones o grupos.
 
-#### Windows
+El gráfico utiliza puntuaciones comparativas para facilitar la lectura entre variables con escalas diferentes. Se evita mostrar información estadística avanzada que no sea necesaria para la interpretación principal del gráfico.
 
-También puede ejecutarse:
+### Radar
 
-```powershell
-.\run_tests_windows.bat
-```
+El radar permite comparar varias métricas de Data Metrics y Model Metrics en una representación conjunta.
 
-La configuración se encuentra en:
+Recomendaciones de uso:
 
-```text
-pytest.ini
-```
+- seleccionar al menos tres métricas para que la forma del radar sea interpretable;
+- interpretar cada eje según la descripción incluida junto al gráfico;
+- en **Modo de trabajo**, la escala debe leerse como:
+  - `0 = Otro`
+  - `1 = Objeto`
+  - `2 = Edición`
+  - un valor mayor indica mayor predominio de Edit Mode;
+- velocidad, distancia y picos utilizan las unidades locales descritas anteriormente.
 
-Los tests utilizan utilidades propias para localizar los módulos del proyecto y simulaciones mínimas de componentes de Blender cuando es necesario. No requieren configurar manualmente `PYTHONPATH`.
+---
 
-La ejecución correcta debe finalizar sin errores ni fallos:
+## Traducciones
 
-```text
-passed
-```
+La interfaz se mantiene en inglés y español.
 
-El número total de pruebas puede variar cuando se añadan nuevos casos.
+Los textos generales de interfaz se centralizan principalmente en:
 
-## Entorno de validación
+- `Ize_Insights/texts.py`
+- `Ize_Logger/texts.py`
 
-Las pruebas automatizadas se ejecutan fuera de Blender mediante `pytest`.
+La semántica de las métricas de Ize Insights se centraliza principalmente en:
 
-La funcionalidad relacionada con la interfaz, los paneles, los operadores, los temporizadores, los *handlers* y el ciclo de vida de los *add-ons* debe comprobarse además dentro de Blender.
+- `Ize_Insights/metric_semantics.py`
 
-| Componente | Estado | Observaciones |
-|---|---|---|
-| Python externo | Validado con Python 3.11.9 | Entorno utilizado para ejecutar pytest fuera de Blender. |
-| Pytest | Validado con pytest 9.0.2 | Configurado mediante `pytest.ini`. |
-| Pruebas automatizadas | Validado | Se ejecutan desde la raíz mediante `python -m pytest -v`. |
-| Blender 4.x | Requiere validación manual | Deben comprobarse paneles, operadores, temporizadores y registro de clases. |
-| Python interno de Blender | Requiere comprobación local | Puede consultarse desde Blender o mediante ejecución en segundo plano. |
-| NumPy y Matplotlib en Blender | Requiere comprobación local | Deben verificarse utilizando el Python interno de Blender. |
+Los textos específicos de ciertas visualizaciones pueden construirse dinámicamente en:
 
-Para consultar la versión del Python interno de Blender:
+- `Ize_Insights/ui_graph_service.py`
 
-```powershell
-blender --background --python-expr "import sys; print(sys.version)"
-```
+Al añadir nuevos textos visibles, tooltips, ayudas contextuales o etiquetas gráficas, deben añadirse las versiones EN/ES correspondientes y evitar cadenas de interfaz duplicadas innecesariamente en distintos archivos.
 
-Para comprobar NumPy y Matplotlib:
+---
 
-```powershell
-blender --background --python-expr "import numpy, matplotlib; print(numpy.__version__); print(matplotlib.__version__)"
-```
+## Estructura del repositorio
 
-Si `blender` no está incluido en la variable `PATH`, debe utilizarse la ruta completa al ejecutable.
-
-## Construcción del ZIP de Analysis 3D
-
-El archivo `Analysis_3D.zip` debe construirse a partir del paquete de Analysis 3D, manteniendo en la raíz del ZIP los archivos principales de la extensión.
-
-La estructura interna esperada es similar a:
+La raíz del repositorio contiene actualmente los paquetes instalables y la documentación principal:
 
 ```text
-Analysis_3D.zip
-├── blender_manifest.toml
-├── __init__.py
-├── analytics.py
-├── constants.py
-├── csv_schema.py
-├── dependencies.py
-├── dependency_ui.py
-├── graphs.py
-├── texts.py
-├── ui.py
-├── ui_graph_rendering.py
-├── ui_graph_service.py
-├── ui_helpers.py
-├── ui_operators.py
-├── ui_panels.py
-├── ui_properties.py
-├── ui_table_service.py
-└── utils.py
+Add_On_Blender_2026/
+├── assets/
+├── datos_analisis/
+├── docs/
+├── images/
+├── Ize_Insights.zip
+├── Ize_Logger_Consent.zip
+├── Ize_Logger_Manual.zip
+├── CONTRIBUTING.md
+├── LICENSE
+├── README.md
+├── requirements.txt
+└── ...
 ```
 
-No debe incluir:
-
-- Blender.
-- Una instalación completa de Python.
-- Carpetas `site-packages`.
-- Archivos `.pyc`.
-- Carpetas `__pycache__`.
-- Entornos virtuales.
-- Datos personales.
-- Otros paquetes ZIP innecesarios.
-
-## Desinstalación
-
-### Data Logger 3D
-
-1. Abre Blender.
-2. Ve a `Edit > Preferences > Add-ons`.
-3. Busca **Data Logger 3D**.
-4. Desactiva el *add-on*.
-5. Pulsa `Remove` si deseas eliminarlo.
-
-Los datos ya incrustados en archivos `.blend` no se eliminan automáticamente.
-
-Para borrarlos manualmente, elimina desde el `Text Editor` los bloques:
+Los ZIP instalables deben contener directamente el paquete del complemento correspondiente:
 
 ```text
-data_log_internal.csv
-data_logger_user_id
-consent_flag
-data_logger_warnings.txt
+Ize_Insights.zip
+└── Ize_Insights/
+    ├── __init__.py
+    ├── ...
+    └── wheels/
+
+Ize_Logger_Manual.zip
+└── Ize_Logger/
+    ├── __init__.py
+    ├── logger_core.py
+    └── ...
 ```
 
-También pueden eliminarse desde las opciones de privacidad del panel de Data Logger 3D.
+No deben distribuirse `__pycache__`, `.pyc`, archivos temporales ni dependencias ya desplegadas dentro del ZIP de Ize Insights.
 
-### Analysis 3D
+---
 
-1. Abre Blender.
-2. Ve a `Edit > Preferences`.
-3. Abre `Add-ons` o `Get Extensions`.
-4. Busca **Analysis 3D**.
-5. Desactiva o desinstala la extensión.
+## Desarrollo y contribuciones
 
-La desinstalación del *add-on* no elimina los archivos CSV guardados por el usuario.
+Consulta [`CONTRIBUTING.md`](CONTRIBUTING.md) antes de realizar cambios.
 
-## Desarrollo y colaboración
+Al modificar los complementos, presta especial atención a:
 
-Antes de enviar cambios:
+- mantener sincronizadas las variantes Manual y Consent de Ize Logger;
+- no bloquear ni cerrar Blender durante operaciones intensivas en Edit Mode;
+- conservar compatibilidad con los CSV existentes;
+- mantener traducciones EN/ES;
+- no cambiar la semántica de una métrica sin actualizar tablas, gráficos y documentación;
+- validar la agregación de grupos;
+- comprobar los tres gráficos principales de Ize Insights;
+- probar instalación limpia de dependencias;
+- limpiar el ZIP final de cachés y binarios desplegados.
 
-1. Instala las dependencias de prueba.
-2. Ejecuta:
+---
 
-```bash
-python -m pytest -v
-```
+## Validación manual recomendada
 
-3. Comprueba manualmente los *add-ons* dentro de Blender.
-4. Verifica que `Analysis_3D.zip` puede instalarse directamente.
-5. Comprueba que el ZIP contiene `blender_manifest.toml` en la raíz.
-6. Evita incluir cachés, dependencias binarias o datos personales.
+Antes de publicar una nueva versión:
 
-Las normas completas de colaboración están disponibles en:
+1. Instala cada ZIP desde cero en Blender.
+2. Comprueba que Ize Insights solicita la instalación de dependencias en una instalación nueva.
+3. Instala las dependencias desde el propio complemento y reinicia Blender.
+4. Verifica que Ize Logger registra en Object Mode y Edit Mode.
+5. Realiza una prueba de estrés editando simultáneamente muchos vértices.
+6. Exporta un CSV desde cada variante del logger.
+7. Carga los CSV individualmente en Insights.
+8. Crea un grupo de varios CSV y ejecuta Calculate Data.
+9. Comprueba que la duración del grupo representa la media de sesiones.
+10. Genera Interaction/Timeline, Forest y Radar.
+11. Comprueba nombres de leyenda, traducciones y unidades.
+12. Valida las métricas de modelo con una escena de prueba conocida.
+13. Revisa la consola de Blender para detectar warnings o tracebacks.
 
-[`CONTRIBUTING.md`](CONTRIBUTING.md)
+---
 
-## Paquetes instalables
+## Licencia
 
-Los principales archivos de instalación son:
+Este proyecto se distribuye bajo la licencia **GNU General Public License v3.0 or later (`GPL-3.0-or-later`)**.
 
-- `Analysis_3D.zip`: paquete instalable de Analysis 3D.
-- `Data_Loggers/Data_Logger_3D.py`: versión normal de Data Logger 3D.
-- `Data_Loggers/Data_Logger_3D_Debug.py`: versión de diagnóstico.
-
-La carpeta `Analysis_3D/` contiene el código fuente utilizado para desarrollo, pruebas y construcción del ZIP.
+Consulta el archivo [`LICENSE`](LICENSE) incluido en el repositorio.
