@@ -1,4 +1,4 @@
-# Contribuir a Ize — Blender 2026
+# Contribuir a Ize Cube
 
 Gracias por colaborar en **Ize Logger** e **Ize Insights**, la suite de herramientas para registrar, analizar y visualizar procesos de modelado 3D en Blender.
 
