@@ -1,4 +1,4 @@
-# Ize — Herramientas para monitorización y análisis de procesos de modelado 3D en Blender
+# Ize Cube — Herramientas para monitorización y análisis de procesos de modelado 3D en Blender
 
 Suite de add-ons para Blender orientada al **registro, análisis y visualización de procesos de modelado 3D**.
 
@@ -46,14 +46,12 @@ Versión actual de los paquetes de referencia: **1.3.0**.
 
 También existe una variante específica para **Python 3.13**:
 
-- `Ize_Insights_Python_3_13.zip`: edición para **Windows x64 + CPython 3.13**. Está pensada para versiones de Blender que incorporen Python 3.13. En una instalación nueva solicita instalar las dependencias y las descarga desde PyPI como wheels binarios compatibles.
-
 ---
 
 ## Compatibilidad
 
 - **Blender:** 4.0 o superior para la rama estándar, validando siempre la versión concreta utilizada.
-- **Python estándar:** la versión incluida con el Blender para el que se haya preparado el paquete.
+- **Python 3.11:** disponible mediante `Ize_Insights_Python_3_11.zip`, preparada para **Windows x64 + CPython 3.11**.
 - **Python 3.13:** disponible mediante `Ize_Insights_Python_3_13.zip`, preparada para **Windows x64 + CPython 3.13**.
 - **Sistemas operativos:** la variante Python 3.13 distribuida actualmente está orientada a Windows x64. Para otras plataformas, las dependencias deben disponer de wheels compatibles.
 
@@ -111,7 +109,7 @@ Ize Insights utiliza principalmente:
 - Pillow
 - y sus dependencias asociadas
 
-En la **versión estándar**, el ZIP distribuye los archivos `.whl` necesarios dentro de `Ize_Insights/wheels/`.
+En la **versión Python 3.11**, el ZIP distribuye los archivos `.whl` necesarios dentro de `Ize_Insights/wheels/`.
 
 En la **versión Python 3.13**, el ZIP no incluye wheels predescargados. Al pulsar **Instalar dependencias**, el Python de Blender ejecuta `pip` con `--only-binary=:all:` y `--no-cache-dir` para obtener desde PyPI paquetes binarios compatibles con `cp313`, sin compilar desde código fuente. Esta variante requiere Internet durante la instalación inicial.
 
@@ -228,7 +226,7 @@ Esta normalización se aplica en el contexto gráfico para estas tres métricas.
 
 Permite observar la evolución temporal de las métricas seleccionadas y comparar varias sesiones.
 
-Cuando se representan varias fuentes, las leyendas deben identificar las series por el **nombre real del CSV o del grupo**, evitando etiquetas genéricas como `Observation 1`, `Observation 2`, etc.
+Cuando se representan varias fuentes, las leyendas deben identificar las series por el **nombre real del CSV o del grupo**.
 
 ### Forest plot
 
@@ -244,11 +242,6 @@ Recomendaciones de uso:
 
 - seleccionar al menos tres métricas para que la forma del radar sea interpretable;
 - interpretar cada eje según la descripción incluida junto al gráfico;
-- en **Modo de trabajo**, la escala debe leerse como:
-  - `0 = Otro`
-  - `1 = Objeto`
-  - `2 = Edición`
-  - un valor mayor indica mayor predominio de Edit Mode;
 - velocidad, distancia y picos utilizan las unidades locales descritas anteriormente.
 
 ---
