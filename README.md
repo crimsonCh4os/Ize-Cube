@@ -1,4 +1,4 @@
-# Ize — Herramientas para monitorización y análisis de procesos de modelado 3D en Blender
+# Ize Cube — Herramientas para monitorización y análisis de procesos de modelado 3D en Blender
 
 Suite de add-ons para Blender orientada al **registro, análisis y visualización de procesos de modelado 3D**.
 
