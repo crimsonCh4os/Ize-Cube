@@ -1,4 +1,4 @@
-# Ize Cube — Herramientas para monitorización y análisis de procesos de modelado 3D en Blender
+# Ize — Herramientas para monitorización y análisis de procesos de modelado 3D en Blender
 
 Suite de add-ons para Blender orientada al **registro, análisis y visualización de procesos de modelado 3D**.
 
@@ -44,13 +44,18 @@ Incluye, entre otras funciones:
 
 Versión actual de los paquetes de referencia: **1.2.0**.
 
+También existe una variante específica para **Python 3.13**:
+
+- `Ize_Insights_Python_3_13.zip`: edición para **Windows x64 + CPython 3.13**. Está pensada para versiones de Blender que incorporen Python 3.13. En una instalación nueva solicita instalar las dependencias y las descarga desde PyPI como wheels binarios compatibles.
+
 ---
 
 ## Compatibilidad
 
-- **Blender:** 4.0 o superior.
-- **Python:** versión incluida con Blender 4.x.
-- **Sistemas operativos:** Windows, Linux y macOS, sujeto a la disponibilidad de wheels compatibles para las dependencias de Ize Insights.
+- **Blender:** 4.0 o superior para la rama estándar, validando siempre la versión concreta utilizada.
+- **Python estándar:** la versión incluida con el Blender para el que se haya preparado el paquete.
+- **Python 3.13:** disponible mediante `Ize_Insights_Python_3_13.zip`, preparada para **Windows x64 + CPython 3.13**.
+- **Sistemas operativos:** la variante Python 3.13 distribuida actualmente está orientada a Windows x64. Para otras plataformas, las dependencias deben disponer de wheels compatibles.
 
 La validación final debe realizarse siempre en la versión concreta de Blender utilizada, especialmente después de actualizar Blender o sus dependencias de Python.
 
@@ -74,15 +79,28 @@ Si cambias de variante Manual a Consent, o viceversa, es recomendable desactivar
 
 ### Ize Insights
 
+#### Versión estándar
+
 1. Abre Blender.
 2. Ve a **Edit > Preferences > Add-ons** o **Get Extensions**.
 3. Selecciona **Install from Disk**.
 4. Instala `Ize_Insights.zip`.
 5. Activa **Ize Insights**.
-6. La primera vez que se instala esa copia del complemento, abre el panel de Ize Insights y pulsa **Instalar dependencias**.
-7. Espera a que finalice la instalación de dependencias.
+6. En una instalación nueva, abre el panel de Ize Insights y pulsa **Instalar dependencias**.
+7. Espera a que finalice la instalación.
 8. Reinicia Blender.
 9. Vuelve a activar Ize Insights si fuese necesario.
+
+#### Versión para Python 3.13
+
+1. Comprueba que la versión de Blender utilizada ejecuta **Python 3.13**.
+2. Instala `Ize_Insights_Python_3_13.zip` mediante **Install from Disk**.
+3. Activa **Ize Insights**.
+4. Pulsa **Instalar dependencias** cuando aparezca el aviso.
+5. Mantén conexión a Internet durante este paso: el instalador obtiene desde PyPI únicamente wheels binarios compatibles con CPython 3.13.
+6. Reinicia Blender cuando finalice la instalación.
+
+No instales simultáneamente `Ize_Insights.zip` e `Ize_Insights_Python_3_13.zip`: son dos variantes del mismo complemento.
 
 ### Dependencias de Ize Insights
 
@@ -93,9 +111,11 @@ Ize Insights utiliza principalmente:
 - Pillow
 - y sus dependencias asociadas
 
-El ZIP distribuye los archivos `.whl` necesarios dentro de `Ize_Insights/wheels/`.
+En la **versión estándar**, el ZIP distribuye los archivos `.whl` necesarios dentro de `Ize_Insights/wheels/`.
 
-Las librerías **no se distribuyen preextraídas** dentro de `site-packages`. Al pulsar **Instalar dependencias**, los wheels se instalan para esa instalación concreta del complemento.
+En la **versión Python 3.13**, el ZIP no incluye wheels predescargados. Al pulsar **Instalar dependencias**, el Python de Blender ejecuta `pip` con `--only-binary=:all:` y `--no-cache-dir` para obtener desde PyPI paquetes binarios compatibles con `cp313`, sin compilar desde código fuente. Esta variante requiere Internet durante la instalación inicial.
+
+Las librerías **no se distribuyen preextraídas** dentro de `site-packages`. Se instalan para esa instalación concreta del complemento.
 
 No se recomienda copiar manualmente carpetas `site-packages`, `.pyd`, `.dll` u otros binarios entre instalaciones de Blender.
 
@@ -127,6 +147,10 @@ Entre los datos registrados se encuentran, según el contexto:
 El logger está diseñado para seguir recogiendo información en **Edit Mode** sin recorrer de forma agresiva el BMesh vivo durante ráfagas de actualización.
 
 Las operaciones que modifican gran cantidad de geometría —por ejemplo, aplicar transformaciones aleatorias sobre todos los vértices de una Suzanne— deben considerarse pruebas de estrés relevantes. El logger debe priorizar la estabilidad de Blender y limitar el coste del muestreo durante estas ráfagas.
+
+### Smooth by Angle
+
+El efecto/modificador **Smooth by Angle** se excluye del conteo de modificadores de Ize Logger para evitar falsos positivos, ya que se considera un efecto de shading más que un modificador de modelado convencional para los objetivos del análisis.
 
 ---
 
@@ -224,6 +248,12 @@ Recomendaciones de uso:
 
 - seleccionar al menos tres métricas para que la forma del radar sea interpretable;
 - interpretar cada eje según la descripción incluida junto al gráfico;
+- en **Modo de trabajo**, la escala debe leerse como:
+  - `0 = Otro`
+  - `1 = Objeto`
+  - `2 = Edición`
+  - un valor mayor indica mayor predominio de Edit Mode;
+- velocidad, distancia y picos utilizan las unidades locales descritas anteriormente.
 
 ---
 
@@ -259,6 +289,7 @@ Add_On_Blender_2026/
 ├── docs/
 ├── images/
 ├── Ize_Insights.zip
+├── Ize_Insights_Python_3_13.zip
 ├── Ize_Logger_Consent.zip
 ├── Ize_Logger_Manual.zip
 ├── CONTRIBUTING.md
@@ -277,6 +308,12 @@ Ize_Insights.zip
     ├── ...
     └── wheels/
 
+Ize_Insights_Python_3_13.zip
+└── Ize_Insights/
+    ├── __init__.py
+    ├── dependencies.py
+    └── ...
+
 Ize_Logger_Manual.zip
 └── Ize_Logger/
     ├── __init__.py
@@ -284,7 +321,7 @@ Ize_Logger_Manual.zip
     └── ...
 ```
 
-No deben distribuirse `__pycache__`, `.pyc`, archivos temporales ni dependencias ya desplegadas dentro del ZIP de Ize Insights.
+No deben distribuirse `__pycache__`, `.pyc`, archivos temporales ni dependencias ya desplegadas dentro del ZIP de Ize Insights. La variante Python 3.13 tampoco debe incluir wheels `cp311` ni binarios de otra versión de Python.
 
 ---
 
@@ -313,16 +350,17 @@ Antes de publicar una nueva versión:
 1. Instala cada ZIP desde cero en Blender.
 2. Comprueba que Ize Insights solicita la instalación de dependencias en una instalación nueva.
 3. Instala las dependencias desde el propio complemento y reinicia Blender.
-4. Verifica que Ize Logger registra en Object Mode y Edit Mode.
-5. Realiza una prueba de estrés editando simultáneamente muchos vértices.
-6. Exporta un CSV desde cada variante del logger.
-7. Carga los CSV individualmente en Insights.
-8. Crea un grupo de varios CSV y ejecuta Calculate Data.
-9. Comprueba que la duración del grupo representa la media de sesiones.
-10. Genera Interaction/Timeline, Forest y Radar.
-11. Comprueba nombres de leyenda, traducciones y unidades.
-12. Valida las métricas de modelo con una escena de prueba conocida.
-13. Revisa la consola de Blender para detectar warnings o tracebacks.
+4. Para `Ize_Insights_Python_3_13.zip`, realiza la prueba en un Blender con Python 3.13 y confirma que se descargan wheels binarios compatibles con `cp313`.
+5. Verifica que Ize Logger registra en Object Mode y Edit Mode.
+6. Realiza una prueba de estrés editando simultáneamente muchos vértices.
+7. Exporta un CSV desde cada variante del logger.
+8. Carga los CSV individualmente en Insights.
+9. Crea un grupo de varios CSV y ejecuta Calculate Data.
+10. Comprueba que la duración del grupo representa la media de sesiones.
+11. Genera Interaction/Timeline, Forest y Radar.
+12. Comprueba nombres de leyenda, traducciones y unidades.
+13. Valida las métricas de modelo con una escena de prueba conocida.
+14. Revisa la consola de Blender para detectar warnings o tracebacks.
 
 ---
 
