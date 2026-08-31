@@ -207,7 +207,6 @@ No extiendas esa normalización a otras métricas sin una decisión explícita y
 Al modificar Interaction/Timeline, Forest o Radar:
 
 - conserva nombres de archivos/grupos identificables en las leyendas;
-- evita etiquetas genéricas como `Obs. 1` cuando se conoce el nombre de la fuente;
 - las explicaciones deben indicar qué significa un valor alto cuando la interpretación no sea evidente;
 - las unidades de la etiqueta deben corresponder con la transformación aplicada al dato;
 - comprueba inglés y español;
@@ -240,8 +239,6 @@ __pycache__/
 *.tmp
 *.bak
 site-packages/
-.venv/
-venv/
 ```
 
 Tampoco incluyas:
